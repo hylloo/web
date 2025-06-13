@@ -1,31 +1,11 @@
-console.log("hello world");
-
-
-
-function initializeCode() {
-    const table = document.getElementById("table");
-    const municipality = document.getElementById("municipality");
-
-    
-
-
-
-
-
-    
-    fetch('https://pxdata.stat.fi:443/PxWeb/api/v1/fi/StatFin/vaerak/statfin_vaerak_pxt_11ra.px', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-      "query": [
-        {
-          "code": "Alue",
-          "selection": {
-            "filter": "item",
-            "values": [ // Kaikki kuntakoodit, tässä esimerkissä vain muutama
-              "SSS",
+{
+  "query": [
+    {
+      "code": "Alue",
+      "selection": {
+        "filter": "agg:_- Kunnat aakkosjärjestyksessä 2025.agg",
+        "values": [
+          "SSS",
           "KU020",
           "KU005",
           "KU009",
@@ -333,49 +313,30 @@ function initializeCode() {
           "KU980",
           "KU981",
           "KU989",
-          "KU992" // Vantaa
-              // Lisää halutessasi lisää koodeja
-            ]
-          }
-        },
-        {
-          "code": "Tiedot",
-          "selection": {
-            "filter": "item",
-            "values": ["vaesto"]
-          }
-        },
-        {
-          "code": "Vuosi",
-          "selection": {
-            "filter": "item",
-            "values": ["2024"]
-          }
-        }
-      ],
-      "response": {
-        "format": "json-stat2"
+          "KU992"
+        ]
       }
-    })
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data); 
-    const municipalities = data.dimension.Alue.category.label;
-    const values = data.value;
-    const userData = document.querySelector("tbody");
-    let i = 0;
-    for (const key in municipalities) {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td>${municipalities[key]}</td><td>${values[i]}</td>`;
-        i++;
-        userData.appendChild(row);
-      
+    },
+    {
+      "code": "Tiedot",
+      "selection": {
+        "filter": "item",
+        "values": [
+          "vaesto"
+        ]
+      }
+    },
+    {
+      "code": "Vuosi",
+      "selection": {
+        "filter": "item",
+        "values": [
+          "2023"
+        ]
+      }
     }
-    
-    // Tähän tulee json-stat2 data
-    // Tähän käsittely, jolla saat kunnat ja väestöt taulukkoon
-  });
+  ],
+  "response": {
+    "format": "json-stat2"
+  }
 }
-
-window.onload = initializeCode;
